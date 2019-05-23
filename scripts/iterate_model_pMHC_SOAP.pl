@@ -13,8 +13,6 @@ if ($#ARGV != 1) {
   exit;
 }
 
-my $imp_home = "/netapp/sali/dina/imp_server_build2/";
-
 my $sequence_file = $ARGV[0];
 my $pMHC = $ARGV[1];
 my $pMHC_signature = UTIL::pMHC_name_signature($pMHC);
@@ -61,12 +59,12 @@ close OUT;
 my $out_file_name = UTIL::trim_extension($sequence_file) . "_" . $pMHC_signature;
 my $out_file = $out_file_name . ".soap_mhc";
 
-my $cmd = "$imp_home/setup_environment.sh $imp_home/bin/soap_score $filenames_file -r -f $home/../libs/soap/cs1.hdf5 --ligand_potentials_file $home/../libs/soap/bs2.hdf5 -o $out_file -n";
+my $cmd = "soap_score $filenames_file -r -f $home/../libs/soap/cs1.hdf5 --ligand_potentials_file $home/../libs/soap/bs2.hdf5 -o $out_file -n";
 print "$cmd\n";
 `$cmd`;
 
 $out_file = $out_file_name . ".soap_pep";
-$cmd = "$imp_home/setup_environment.sh $imp_home/bin/soap_score $filenames_file -r -f $home/../libs/soap/soap_pep.hdf5 -o $out_file";
+$cmd = "soap_score $filenames_file -r -f $home/../libs/soap/soap_pep.hdf5 -o $out_file";
 print "$cmd\n";
 `$cmd`;
 

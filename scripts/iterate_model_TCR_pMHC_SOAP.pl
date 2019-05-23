@@ -15,8 +15,6 @@ if ($#ARGV != 3) {
   exit;
 }
 
-my $imp_home = "/netapp/sali/dina/imp_server_build2/";
-
 my $template_DB = $ARGV[0];
 my $TCR_DB = $ARGV[1];
 my $sequence_file = $ARGV[2];
@@ -127,7 +125,7 @@ foreach my $sequence (@sequences) {
 
       # run SOAP
       my $run_name = $name_signature . "_" . $tcr_name;
-      my $cmd = "$imp_home/setup_environment.sh $imp_home/bin/soap_score $pMHC_pdb $tcr $trans_file -o $run_name.res";
+      my $cmd = "soap_score $pMHC_pdb $tcr $trans_file -o $run_name.res";
       print "$cmd\n";
       `$cmd`;
 
