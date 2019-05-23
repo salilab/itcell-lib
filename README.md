@@ -6,6 +6,11 @@ A [web server](https://salilab.org/itcell/) is also available.
 
 # Prerequisites
 
- - [IMP](https://integrativemodeling.org/)
- - [SCRWL 4](http://dunbrack.fccc.edu/scwrl4/)
- - [MultiProt](http://bioinfo3d.cs.tau.ac.il/MultiProt/)
+ITCell will likely only work on a Linux system.
+
+ - [IMP](https://integrativemodeling.org/) (the scripts expect to find the
+   `soap_score` binary in the PATH).
+ - [SCRWL 4](http://dunbrack.fccc.edu/scwrl4/) (the scripts expect the SCWRL
+   executable to be found as `scripts/scwrl4/Scwrl4`).
+ - [MultiProt](http://bioinfo3d.cs.tau.ac.il/MultiProt/) (the scripts expect
+   to use `scripts/multiprot.Linux` and were developed with version 1.93)
