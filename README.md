@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3226992.svg)](https://doi.org/10.5281/zenodo.3226992)
+
 This is the source code for ITCell, a method for integrative T-cell epitope
 prediction.
 See [D. Schneidman-Duhovny et al.](https://doi.org/10.1101/415661) for details.
