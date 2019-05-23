@@ -8,7 +8,7 @@ A [web server](https://salilab.org/itcell/) is also available.
 
 ITCell will likely only work on a Linux system.
 
-First, download or clone this repository. Then download the prerequsites:
+First, download or clone this repository. Then download the prerequisites:
 
  - [IMP](https://integrativemodeling.org/) (the scripts expect to find the
    `soap_score` binary in the PATH).
@@ -19,8 +19,8 @@ First, download or clone this repository. Then download the prerequsites:
    to use `scripts/multiprot.Linux` and were developed with version 1.93).
 
 Next, download the support libraries from
-<a href="https://salilab.org/ITCell/">https://salilab.org/ITCell/</a> and
-extract into the `libs` directory.
+<a href="https://salilab.org/itcell-lib/">https://salilab.org/itcell-lib/</a>
+and extract into the `libs` directory.
 
 # Usage
 
