@@ -1,0 +1,157 @@
+#!/usr/bin/perl -w
+
+use strict;
+use FindBin;
+use File::Basename;
+use File::Copy;
+
+my $home = "$FindBin::Bin";
+my $imp_home = "~/imp_fast_not_static/";
+
+require "$home/Transformation.pm";
+
+if ($#ARGV != 2) {
+  print "Usage: model_TCR_pMHC.pl <complex_template_DB> <TCR_model_list> <pMHC_pdb>\n";
+  print "Assumes that in pMHC_pdb, MHC chains are AB, and peptide chain is C\n";
+  exit;
+}
+
+my $template_DB = $ARGV[0];
+my $TCR_DB = $ARGV[1];
+my $pMHC_pdb = $ARGV[2];
+
+# remove unnecessary parts from the filename and copy it
+my $pMHC_name = basename($pMHC_pdb);
+$pMHC_name =~ s/(.)\.[^.]+$/$1/x; $pMHC_name =~ s/(.)\.[^.]+$/$1/x;
+#$pMHC_name =~ s/(.)\_[^_]+$/$1/x; $pMHC_name =~ s/(.)\_[^_]+$/$1/x;
+my $pMHC = "curr_mhc.pdb";
+copy("$pMHC_pdb", "$pMHC") or die "Copy failed: $pMHC_pdb\n";
+print "pMHC = $pMHC\n";
+
+open FILE, $template_DB or die "Can't open file template DB file $template_DB\n";
+my @template_files = <FILE>;
+close FILE;
+open FILE, $TCR_DB or die "Can't open file TCR models file $TCR_DB\n";
+my @tcr_files = <FILE>;
+close FILE;
+
+my $best_score = 10000.0;
+my $best_structure = '';
+
+`cp $home/params.txt .`;
+
+# iterate TCRs
+foreach my $tcr (@tcr_files) {
+  chomp $tcr;
+  print "TCR = $tcr\n";
+  # copy a
+  my $tcr_name = basename(dirname($tcr)) . "_" . basename($tcr);
+  if(basename(dirname($tcr)) eq ".") { $tcr_name = basename($tcr) }
+  else {
+    copy("$tcr", "$tcr_name") or die "Copy failed from $tcr to $tcr_name\n";
+  }
+
+  # iterate templates and prepare transformation file for FireDock
+  my $trans_file = $pMHC_name.".trans";
+  open OUT, ">$trans_file" or die "Can't open file $trans_file\n";
+  my $counter = 1;
+  foreach my $template (@template_files) {
+    chomp $template;
+    print "$counter Template = $template\n";
+
+    # compute T1 = pMHC transformation from template
+    my $template_MHC = $template . "/pMHC.pdb";
+    print "get_alignment_transformation( $pMHC, $template_MHC)\n";
+    my ($rx1, $ry1, $rz1, $tx1, $ty1, $tz1) = get_alignment_transformation($pMHC, $template_MHC);
+    print "$rx1, $ry1, $rz1, $tx1, $ty1, $tz1\n";
+
+    # compute T2 = TCR transformation to the template
+    my $template_TCR = $template . "/TCR.pdb";
+    my ($rx2, $ry2, $rz2, $tx2, $ty2, $tz2) = get_alignment_transformation($template_TCR, $tcr_name);
+    print "$rx2, $ry2, $rz2, $tx2, $ty2, $tz2\n";
+
+    my ($rx, $ry, $rz, $tx, $ty, $tz) =
+        Transformation::multiply_transforms($rx1, $ry1, $rz1, $tx1, $ty1, $tz1,
+                                            $rx2, $ry2, $rz2, $tx2, $ty2, $tz2);
+
+    print OUT "$counter $rx $ry $rz $tx $ty $tz\n";
+    $counter++;
+
+###
+    print "$home/pdb_trans $rx $ry $rz $tx $ty $tz < $tcr_name > $tcr_name.tr\n";
+    `$home/pdb_trans $rx $ry $rz $tx $ty $tz < $tcr_name > $tcr_name.tr`; 
+    `cat $pMHC $tcr_name.tr > complex.pdb`;
+    my $out_file = "modeled.pdb";
+    print "$home/scwrl4/Scwrl4 -i complex.pdb -o modeled.pdb\n";
+    `$home/scwrl4/Scwrl4 -i complex.pdb -o modeled.pdb`;
+    print "$home/getChain.Linux ABC modeled.pdb > modeledABC.pdb\n";
+    `$home/getChain.Linux ABC modeled.pdb > modeledABC.pdb`;
+    print "$home/getChain.Linux DE modeled.pdb > modeledDE.pdb\n"; 
+    `$home/getChain.Linux DE modeled.pdb > modeledDE.pdb`;              
+    `rm -f TCR.pdb.tr`;
+    #`rm -f complex.pdb`;
+    #`rm -f modeled.pdb`;
+###    
+#  } # end templates iteration
+#  close (OUT);
+
+    # run SOAP
+    my $run_name = $pMHC_name . "_" . $tcr_name;
+    my($filename, $directories, $suffix) = fileparse($run_name, qr/\.[^.]*/);
+    $run_name = $filename;
+
+    #my $paramfile = $run_name . "_params.txt";
+    #print "$paramfile\n";
+    
+#  my $cmd = "$imp_home/setup_environment.sh $imp_home/bin/soap_score $pMHC $tcr_name $trans_file -o $run_name.res";
+    my $cmd = "$imp_home/setup_environment.sh $imp_home/bin/soap_score modeledABC.pdb modeledDE.pdb";
+    print "$cmd\n";
+    `$cmd`;
+    
+    # pick the best template - TODO
+    #my $curr_score = `tail -n$counter $run_name.res | sort -nk3 | head -n1 | cut -d '|' -f2`;
+    my $curr_score = `tail -n1 soap_score.res | cut -d '|' -f2`; 
+    chomp $curr_score;
+    $curr_score += 0.0;
+    print "Curr score = $curr_score\n";
+
+    if(length($best_structure) == 0 || $best_score > $curr_score)  {
+	#my $best_num = `tail -n$counter $run_name.res | sort -nk3 | head -n1 | cut -d '|' -f1`;
+	#chomp $best_num;
+	#$best_num =~ s/\s+$//; $best_num =~ s/^\s+//;
+	#$best_structure = $run_name . "_" . $best_num . ".ref.pdb";
+	$best_structure = $tcr . "_" . $counter;
+	print "best_structure = $best_structure\n";
+	$best_score = $curr_score;
+    }
+
+
+#    `rm -f $run_name.res $trans_file`;
+  } # end templates iteration    
+  close(OUT);
+  `rm -f log_multiprot.txt $trans_file modeledABC.pdb modeledDE.pdb soap_score.res`;
+
+}  # end TCR iteration
+
+# record best scoring model for the peptide
+open OUT, ">>$pMHC_name\_TCR_score_SOAP.txt";
+print OUT "$pMHC_name | $best_score | $best_structure\n";
+
+
+sub get_alignment_transformation {
+  `$home/multiprot.Linux $_[0] $_[1]`;
+  #print "match.linux $_[0] $_[1]\n";
+  my $grep_line = `grep Trans 2_sol.res`;
+  my @tmp = split(' ', $grep_line);
+  unlink "2_sol.res";
+  return ($tmp[$#tmp-5], $tmp[$#tmp-4], $tmp[$#tmp-3], $tmp[$#tmp-2], $tmp[$#tmp-1], $tmp[$#tmp]);
+}
+
+sub get_alignment_transformation2 {
+  `match.linux $_[0] $_[1] | head -n2 > match`;
+  #print "match.linux $_[0] $_[1]\n";
+  my $grep_line = `grep RESULT match`;
+  my @tmp = split(' ', $grep_line);
+  unlink "match";
+  return ($tmp[$#tmp-8], $tmp[$#tmp-7], $tmp[$#tmp-6], $tmp[$#tmp-5], $tmp[$#tmp-4], $tmp[$#tmp-3]);
+}

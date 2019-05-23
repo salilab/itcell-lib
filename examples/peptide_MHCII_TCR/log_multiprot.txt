@@ -1,0 +1,36 @@
+########### Program Parameters ##################
+BioCore	(Int)	3
+BioCoreRadius	(Float)	3
+ChainEq	(Int)	0
+ClusterSeqBlockRMSDthr	(Float)	-1
+ContFragmentMatch	(Int)	0
+ExtIterations	(Int)	3
+ExtThr	(Float)	3
+FullSet	(Int)	1
+IJStep	(Int)	1
+IJshift	(Int)	100
+MaxDels	(Int)	350
+MaxIns	(Int)	350
+MaxRFP	(Int)	4500
+OnlyRefMol	(Int)	1
+OnlyScoring	(Int)	0
+PointType	(Int)	0
+PrintHits	(Int)	0
+ResNum	(Int)	100
+ResNumPrint	(Int)	1
+RobustFPClustering	(Int)	0
+Scoring	(Int)	0
+SeqBlockMinSize	(Int)	10
+SeqBlockOverlapRatio	(Float)	0.8
+SeqBlockRMSDthr	(Float)	3
+SeqOrder	(Int)	1
+Step	(Int)	1
+TransEqualRMSD	(Float)	4
+bvResNum	(Int)	3
+#################################################
+Molecule /oboe1/home/dina/projects/bayer/ITCell/libs/templates/4e41/TCR.pdb size : 417
+Molecule TCR.B99990003.pdb size : 115
+
+Num Of Mols: 2 Largest Solution: 99
+
+Overall Run Time: 00:00:00.18

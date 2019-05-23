@@ -1,0 +1,3 @@
+To generate TCR models for sequences in seq.fasta run:
+
+../../scripts/iterate_model_TCR.pl seq.fasta

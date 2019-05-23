@@ -1,0 +1,11 @@
+Modeling peptide-MHCII complexes
+
+to generate and score peptide-MHCII complexes for the sequence in seq.fasta, run:
+
+../../scripts/iterate_model_pMHC_SOAP.pl seq.fasta ../../libs/MHCII_models/DRB1_0101/model.pdb
+
+
+There are two output files for two scoring functions: (i) seq.fasta.soap and (ii) seq.fasta.soap_pep
+The first scoring function is MHCII specific, while the second is general for protein-peptide interactions.
+If the input sequence is long (at least tens of peptides) than Zscore column should be informative, the lower the score the better.
+Otherwise it is better to look at the second score column.

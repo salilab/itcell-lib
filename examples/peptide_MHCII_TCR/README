@@ -1,0 +1,15 @@
+Modeling peptide-MHCII-TCR complexes
+
+1. prepare TCR models (see TCRmodel example)
+
+2. run peptide-MHCII modeling (see example):
+../../scripts/iterate_model_pMHC_SOAP.pl seq.fasta ../../libs/MHCII_models/DRB1_0101/model.pdb
+
+3. add the TCRs by running:
+../../scripts/iterate_model_TCR_pMHC_SOAP.pl templates_DB TCR_list seq.fasta ../../libs/MHCII_models/DRB1_0101/model.pdb
+
+where template_DB is a list of paths folders in the lib/templates/ folder and
+TCR_list is a list of TCR models (see example files).
+
+4. combine peptide-MHC and TCR scores:
+../../scripts/iterate_results.pl seq.fasta ../../libs/MHCII_models/DRB1_0101/model.pdb

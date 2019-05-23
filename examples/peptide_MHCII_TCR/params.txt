@@ -1,0 +1,78 @@
+#Maximal RMSD for matching two rigid fragments
+SeqBlockRMSDthr 3.0
+
+#Minimal size of rigidly matched fragments
+SeqBlockMinSize 10
+
+# When set to "1" all the alignment are performed only on the first
+# molecule, i.e. all solutions contain the first molecule. In this
+# case ("1") the program runs MUCH faster than in general ("0") case.
+OnlyRefMol 1
+
+
+# Multiple structural alignment is computed according to the sequence
+# order - like sequence alignment (0- no sequence order, 1- yes)
+SeqOrder 1
+
+#protein representation
+#0 - Calpha atoms
+#1 - Cbeta atoms
+#2 - Side Chain specific points
+PointType 0
+
+#Solution Scoring
+#0 - pure geometry
+#1 - PAM250 scoring
+#2 - BioCore according to classification of parameter BioCore below
+#3 - PAM250 positive (only amino acids with positive PAM250 value are aligned)
+Scoring 0
+
+#calculate bio-core according to the following classification
+# 0- user defined. Reads file 'biocore.in'
+# 1- identity
+# 2- Hydrophobic - A,V,I,L,M,C
+#    Hydrophilic +charged - K,R,H
+#    Hydrophilic -charged - D,E
+#    Hydrophilic polar uncharged - S,T,P,N,Q
+#    Aromatic - F,Y,W
+#    Glycine - G
+# 3- (default)
+#    Hydrophobic - A,V,I,L,M,C
+#    Hydrophilic +charged, -charged, polar - K,R,H,D,E,S,T,P,N,Q
+#    Aromatic - F,Y,W
+#    Glycine - G
+BioCore 3
+
+#radius for atom match
+BioCoreRadius 3
+
+
+#Aligned atoms should have the same chain name (works only when BioCore is
+#swicthed on, i.e. when BioCore is not equal to zero. Results *_sets.res don't
+#dependent on this option)
+#(0/1) default 0.
+ChainEq 0
+
+
+
+
+#Setting it to 0 reduces running time, but might produce slightly
+#smaller multiple alignments.
+FullSet 1
+
+#Overlap ratio (between 0.0 and 1.0) for clustering SeqBlocks
+SeqBlockOverlapRatio 0.8
+
+#Calculate only the alignment score. Do not perform search for
+#transformations, i.e. pdb coordinates are unchanged.
+OnlyScoring 0
+
+
+#Number of output results
+ResNumPrint 1
+
+#Maximal shift in indices of two matched rigid fragments.
+#Since we don't know a priori the relation of molecules we'd
+#like to set the IJshift to infinity, but smaller the shift the program
+#runs faster
+IJshift 100
