@@ -6,6 +6,7 @@ use File::Basename;
 use File::Copy;
 
 my $home = "$FindBin::Bin";
+my $libs = "$home/..libs";
 require "$home/UTIL.pm";
 require "$home/Transformation.pm";
 
@@ -60,6 +61,8 @@ foreach my $tcr (@tcr_files) {
   my $counter = 0;
   foreach my $template (@template_files) {
     chomp $template;
+    # Templates are relative to the path of the database file
+    $template = dirname($template_DB) . '/' . $template;
     print "$counter Template = $template\n";
 
     if ($pMHC_aligned == 1) { # prealigned pMHC and complex template
