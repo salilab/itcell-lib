@@ -20,8 +20,9 @@ First, download or clone this repository. Then download the prerequisites:
  - [MultiProt](http://bioinfo3d.cs.tau.ac.il/MultiProt/) (the scripts expect
    to use `scripts/multiprot.Linux` and were developed with version 1.93).
 
-Next, download the support libraries from
-<a href="https://salilab.org/itcell-lib/">https://salilab.org/itcell-lib/</a>
+Next, download the support libraries, `libs.tar.xz`, from
+[https://salilab.org/itcell-lib/](https://salilab.org/itcell-lib/)
+or [10.5281/zenodo.3226992](https://doi.org/10.5281/zenodo.3226992)
 and extract into the `libs` directory.
 
 # Usage
