@@ -14,7 +14,7 @@ First, download or clone this repository. Then download the prerequisites:
 
  - [IMP](https://integrativemodeling.org/) (the scripts expect to find the
    `soap_score` binary in the PATH).
- - [SCRWL 4](http://dunbrack.fccc.edu/scwrl4/) (extract SCWRL into the
+ - [SCWRL 4](http://dunbrack.fccc.edu/scwrl4/) (extract SCWRL into the
    `scripts/scwlr4` subdirectory of this repository; the scripts expect the
    SCWRL executable to be found as `scripts/scwrl4/Scwrl4`).
  - [MultiProt](http://bioinfo3d.cs.tau.ac.il/MultiProt/) (the scripts expect
