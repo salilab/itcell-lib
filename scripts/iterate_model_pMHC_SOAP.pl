@@ -44,8 +44,8 @@ foreach my $sequence (@sequences) {
     `cat $mhc_fasta_file > $seq_file`;
     `echo $peptide_sequence >> $seq_file`; # upper case
     my $out_file = "pMHC_" . $name_signature . ".pdb";
-    print "$home/scwrl4/Scwrl4 -i $pMHC -s $seq_file -o $out_file\n";
-    `$home/scwrl4/Scwrl4 -i $pMHC -s $seq_file -o $out_file`;
+    print "Scwrl4 -i $pMHC -s $seq_file -o $out_file\n";
+    `Scwrl4 -i $pMHC -s $seq_file -o $out_file`;
 
     my $peptide_file = $name_signature . ".pdb";
     `$home/getChain.Linux C $out_file > $peptide_file`;

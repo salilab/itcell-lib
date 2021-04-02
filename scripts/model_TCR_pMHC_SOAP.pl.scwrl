@@ -93,8 +93,8 @@ foreach my $tcr (@tcr_files) {
     my $out_file = "modeled.pdb";
 
     # 1.0 scwrl
-    print "$home/scwrl4/Scwrl4 -i complex.pdb -s $seq_file2 -o modeled.pdb\n";
-    `$home/scwrl4/Scwrl4 -i complex.pdb -s $seq_file2 -o modeled.pdb`;
+    print "Scwrl4 -i complex.pdb -s $seq_file2 -o modeled.pdb\n";
+    `Scwrl4 -i complex.pdb -s $seq_file2 -o modeled.pdb`;
     print "$home/getChain.Linux ABC modeled.pdb > modeledABC.pdb\n";
     `$home/getChain.Linux ABC modeled.pdb > modeledABC.pdb`;
     print "$home/getChain.Linux DE modeled.pdb > modeledDE.pdb\n"; 
